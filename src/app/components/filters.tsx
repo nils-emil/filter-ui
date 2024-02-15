@@ -13,7 +13,7 @@ export default function Filters() {
     dispatch(fetchFilters());
   }, [dispatch]);
 
-  return <div className="backdrop-filter">
+  return <div>
     <FilterCreator></FilterCreator>
     <FilterList filters={filters}></FilterList>
   </div>

@@ -13,7 +13,7 @@ export default function Home() {
   }
   return (
     <Provider store={storeRef.current}>
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-24">
         <Filters></Filters>
       </main>
     </Provider>
