@@ -26,12 +26,8 @@ const style = {
 export default function FilterCreateFormModalWrapper({closeForm}: { closeForm: () => void }) {
   return <div>
     <Backdrop open={true} sx={{backgroundColor: 'rgba(0, 0, 0, 0.25)', zIndex: 1}} onClick={closeForm}/>
-    <Modal
-      BackdropProps={{style: {backgroundColor: 'rgba(0, 0, 0, 0.25)'}}} // Customize backdrop style
-      center
-      backdrop
-      open={true}
-      onClose={closeForm}>
+    <Modal open={true}
+           onClose={closeForm}>
       <Box className="resize-y" sx={style}>
         <FilterCreateForm closeForm={closeForm}></FilterCreateForm>
       </Box>

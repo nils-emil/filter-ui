@@ -1,4 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {API_URL} from "@/lib/env";
 
 export interface FilterState {
   loading: boolean;
@@ -14,30 +15,27 @@ export interface Filter {
 export interface FilterCriteria {
   type: string;
   comparisonOperator: string;
-  value: string;
+  value?: string;
 }
 
 export const createFilter = createAsyncThunk(
   'filters/create',
   async (newFilter: Filter, thunkAPI) => {
-    try {
-      await fetch('http://localhost:8080/filter', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newFilter),
-      });
-      thunkAPI.dispatch(fetchFilters());
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
+    await fetch(`${API_URL}/filter`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newFilter),
+    });
+    thunkAPI.dispatch(fetchFilters());
+
   }
 );
 
 export const fetchFilters = createAsyncThunk(
   'filters', async () => {
-    const res = await fetch(`http://localhost:8080/filters`);
+    const res = await fetch(`${API_URL}/filters`);
     return await res.json() as Filter[];
   }
 );

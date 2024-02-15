@@ -1,5 +1,5 @@
 "use client";
-import {useState} from 'react';
+import {FormEvent, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
@@ -13,7 +13,7 @@ import {filterCreateFormConfiguration} from "@/app/components/create/form/filter
 const initialCriterion = {
   type: filterCreateFormConfiguration[0].type,
   comparisonOperator: filterCreateFormConfiguration[0].comparisonOperators[0],
-  value: null
+  value: ''
 } as FilterCriteria;
 
 export default function FilterCreateForm({closeForm}: { closeForm: () => void }) {
@@ -25,20 +25,20 @@ export default function FilterCreateForm({closeForm}: { closeForm: () => void })
     setCriteria([...criteria, initialCriterion]);
   };
 
-  const handleRemoveCriteria = (index) => {
+  const handleRemoveCriteria = (index: number) => {
     const newCriteria = [...criteria];
     newCriteria.splice(index, 1);
     setCriteria(newCriteria);
   };
 
-  const handleTypeChange = (index, field, value) => {
+  const handleTypeChange = (index: number, field: string, value: string) => {
     const newCriteria = criteria.map((criterion, i) => {
       if (i === index) {
         const indexOfType = filterCreateFormConfiguration.findIndex((config) => config.type === value);
         return {
           type: filterCreateFormConfiguration[indexOfType].type,
           comparisonOperator: filterCreateFormConfiguration[indexOfType].comparisonOperators[0],
-          value: null
+          value: ''
         } as FilterCriteria;
       }
       return criterion;
@@ -46,7 +46,7 @@ export default function FilterCreateForm({closeForm}: { closeForm: () => void })
     setCriteria(newCriteria);
   };
 
-  const handleChange = (index, field, value) => {
+  const handleChange = (index: number, field: string, value: string) => {
     const newCriteria = criteria.map((crit, i) => {
       if (i === index) {
         return {...crit, [field]: value};
@@ -56,7 +56,7 @@ export default function FilterCreateForm({closeForm}: { closeForm: () => void })
     setCriteria(newCriteria);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent) => {
     const filter: Filter = {name: formName, criteria: criteria};
     dispatch(createFilter(filter));
     event.preventDefault();
@@ -70,7 +70,7 @@ export default function FilterCreateForm({closeForm}: { closeForm: () => void })
                variant="standard" fullWidth margin="normal"/>
     <div className="flex flex-col mt-6 gap-6">
       {criteria.map((criterion, index) => (
-        <div className="grid grid-cols-6 gap-3">
+        <div className="grid grid-cols-6 gap-3" key={`criterion-${index}`}>
           <div key={`${criteria.length}${index}`} className="col-span-6 md:col-span-5 flex gap-3">
             <Select
               value={criterion.type}
@@ -86,7 +86,6 @@ export default function FilterCreateForm({closeForm}: { closeForm: () => void })
             {filterCreateFormConfiguration.map((config, i) => (
               <When key={"" + i} condition={config.type === criterion.type}>
                 <Select
-                  size="large"
                   value={criterion.comparisonOperator}
                   variant="standard"
                   fullWidth
